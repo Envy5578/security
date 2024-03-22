@@ -1,15 +1,22 @@
 package com.focus_group.security.tokens;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.token.Token;
 import org.springframework.security.core.token.TokenService;
+import org.springframework.stereotype.Service;
+
+import com.focus_group.security.dto.AuthenticationResponse;
+
+import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
+@Service
 public class JwtTokenService implements TokenService {
-    private final JwtCore jwtCore;
+    // private final JwtCore jwtCore;
+    public AuthenticationResponse generateAccessToken(String username) {
+        return new AuthenticationResponse();
+    }
     @Override
     public Token allocateToken(String extendedInformation) {
         // TODO Auto-generated method stub

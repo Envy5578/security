@@ -10,11 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.focus_group.security.services.UserNotEnabledExceptionHandler;
 import com.focus_group.security.tokens.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +45,9 @@ public class SecurityConfiguration {
         // private final Web web;
 
         private final AuthenticationProvider authenticationProvider;
-//        private final AuthenticationEntryPoint userNotEnabledExceptionHandler;
+        private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
         private final JwtAuthenticationFilter jwtAuthFilter;
+        
 
         @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -68,7 +69,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
+                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))
