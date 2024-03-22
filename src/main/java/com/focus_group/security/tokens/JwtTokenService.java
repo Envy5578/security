@@ -1,11 +1,15 @@
 package com.focus_group.security.tokens;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.token.Token;
 import org.springframework.security.core.token.TokenService;
 
 
+@RequiredArgsConstructor
 public class JwtTokenService implements TokenService {
-
+    private final JwtCore jwtCore;
     @Override
     public Token allocateToken(String extendedInformation) {
         // TODO Auto-generated method stub

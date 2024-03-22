@@ -2,23 +2,37 @@ package com.focus_group.security.entitys;
 
 import java.util.Collection;
 
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
 @AllArgsConstructor
+@Table(name = "users")
 public class UserEntity implements UserDetails{
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "firstname")
     private String firstName;
+
+    @Column(name = "lastname")
     private String lastName;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "active", nullable = true)
+    private Boolean active;
 
 
 
@@ -38,7 +52,8 @@ public class UserEntity implements UserDetails{
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getPassword()
+                user.getPassword(),
+                user.getActive()
         );
         
     }
