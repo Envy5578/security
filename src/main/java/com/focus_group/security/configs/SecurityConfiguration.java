@@ -45,11 +45,7 @@ public class SecurityConfiguration {
         // private final Web web;
 
         private final AuthenticationProvider authenticationProvider;
-<<<<<<< HEAD
-//        private final AuthenticationEntryPoint userNotEnabledExceptionHandler;
-=======
         private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
->>>>>>> 9222cd58df43168e32f7f6bb2c1ce818d2688682
         private final JwtAuthenticationFilter jwtAuthFilter;
         
 
