@@ -1,5 +1,5 @@
 package com.focus_group.security.dto;
 
-public class RegisterRequest extends BaseUser {
+public class RegisterRequest {
     
 }

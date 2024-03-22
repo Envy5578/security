@@ -10,11 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.focus_group.security.services.UserNotEnabledExceptionHandler;
 import com.focus_group.security.tokens.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +45,13 @@ public class SecurityConfiguration {
         // private final Web web;
 
         private final AuthenticationProvider authenticationProvider;
+<<<<<<< HEAD
 //        private final AuthenticationEntryPoint userNotEnabledExceptionHandler;
+=======
+        private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
+>>>>>>> 9222cd58df43168e32f7f6bb2c1ce818d2688682
         private final JwtAuthenticationFilter jwtAuthFilter;
+        
 
         @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
