@@ -45,7 +45,11 @@ public class SecurityConfiguration {
         // private final Web web;
 
         private final AuthenticationProvider authenticationProvider;
+<<<<<<< HEAD
+//        private final AuthenticationEntryPoint userNotEnabledExceptionHandler;
+=======
         private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
+>>>>>>> 9222cd58df43168e32f7f6bb2c1ce818d2688682
         private final JwtAuthenticationFilter jwtAuthFilter;
         
 
@@ -69,7 +73,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
+//                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))
