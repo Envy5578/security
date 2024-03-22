@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @SuppressWarnings("null")
     Optional<UserEntity> findById(Long id);
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByFirstName(String username);
 
 }
