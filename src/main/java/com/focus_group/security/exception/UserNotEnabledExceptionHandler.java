@@ -1,4 +1,4 @@
-package com.focus_group.security.services;
+package com.focus_group.security.exception;
 
 import java.io.IOException;
 

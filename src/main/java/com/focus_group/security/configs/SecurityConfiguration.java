@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.focus_group.security.services.UserNotEnabledExceptionHandler;
+import com.focus_group.security.exception.UserNotEnabledExceptionHandler;
 import com.focus_group.security.tokens.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
