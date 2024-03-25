@@ -2,9 +2,10 @@ package com.focus_group.security.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 @Schema(description = "Response for successful authentication")
 public record AuthenticationResponse(
-
         @Schema(description = "Token type", example = "bearer")
         String tokenType,
         @Schema(description = "Access token", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -14,4 +15,4 @@ public record AuthenticationResponse(
         @Schema(description = "Refresh token", requiredMode = Schema.RequiredMode.REQUIRED)
         String refreshToken
 
-) {}
+) implements Serializable {}
