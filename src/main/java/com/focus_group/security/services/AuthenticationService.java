@@ -7,5 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+    private final UserService userService;
+    // private final MailService mailService;
     
 }

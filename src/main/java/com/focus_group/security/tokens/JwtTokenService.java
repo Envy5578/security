@@ -14,7 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenService{
     private final JwtCore jwtCore;
     public AuthenticationResponse generateAccessToken(String username) {
+
         return new AuthenticationResponse(username, username, null, username);
+
+//        return new AuthenticationResponse(username);
+ 
+
     }
 
 
