@@ -8,12 +8,6 @@ import java.io.Serializable;
 
 @Schema(description = "Request object for authentication")
 public record AuthenticationRequest(
-        @Schema(description = "First name", requiredMode = Schema.RequiredMode.REQUIRED, example = "John", maxLength = 255)
-        String firstName,
-
-        @Schema(description = "Last name", requiredMode = Schema.RequiredMode.REQUIRED, example = "Doe", maxLength = 255)
-        String lastName,
-
         @Schema(description = "Email address", requiredMode = Schema.RequiredMode.REQUIRED, example = "user@example.com", maxLength = 255)
         String email,
 
@@ -21,4 +15,5 @@ public record AuthenticationRequest(
         @NotBlank(message = "Password cannot be blank")
         @Length(min = 8, max = 255, message = "Password length must be between 8 and 255 characters")
         String password
+
 ) implements Serializable {}
