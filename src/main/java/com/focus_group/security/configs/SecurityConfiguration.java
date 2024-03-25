@@ -2,6 +2,7 @@ package com.focus_group.security.configs;
 
 import java.util.List;
 
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.Web;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -42,7 +43,7 @@ public class SecurityConfiguration {
         "/ws/**",
         "/ws",
         "/"};
-        // private final Web web;
+        private final Web web;
 
         private final AuthenticationProvider authenticationProvider;
         private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;

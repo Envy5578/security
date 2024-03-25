@@ -3,7 +3,7 @@ import org.springframework.security.core.AuthenticationException;
 
 import com.focus_group.security.enumType.ErrorCode;
 
-public class UnauthorizedException extends AuthenticationException{
+public class UnauthorizedException extends AuthenticationException {
 
     private ErrorCode errorCode;
 
