@@ -13,7 +13,8 @@ import com.focus_group.security.dto.AuthenticationResponse;
 public class JwtTokenService implements TokenService {
     // private final JwtCore jwtCore;
     public AuthenticationResponse generateAccessToken(String username) {
-        return new AuthenticationResponse();
+//        return new AuthenticationResponse(username);
+        return null;
     }
 
     @Override
@@ -33,5 +34,4 @@ public class JwtTokenService implements TokenService {
         throw new UnsupportedOperationException("Unimplemented method 'extractUserIdFromJWT'");
     }
     
-}
 }
