@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-//    private final JwtTokenService tokenService;
+    private final JwtTokenService tokenService;
     private static final List<String> ALLOWED_PATHS = List.of(
             "/api/v1/auth",
             "api/v1/test",
@@ -51,8 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
                 try {
             String jwt = extractJwtFromRequest(request);
-//            String userId = tokenService.extractUserIdFromJWT(jwt);
-//            authenticateUserIfNecessary(userId, jwt, request);
+            String userId = tokenService.extractUserIdFromJWT(jwt);
+            authenticateUserIfNecessary(userId, jwt, request);
         } catch (UnauthorizedException e) {
             log.error("Authentication error: {}", e.getMessage());
             sendErrorResponse(e, response, request);
@@ -67,12 +67,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     
-    private void sendErrorResponse(UnauthorizedException e, HttpServletResponse response, HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendErrorResponse'");
-    }
-
-
+    
+    
     private boolean isRequestAllowedWithoutAuthentication(HttpServletRequest request) {
         String requestPath = request.getServletPath();
         return ALLOWED_PATHS.stream().anyMatch(requestPath::contains);
@@ -82,13 +78,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'authenticateUserIfNecessary'");
     }
-
+    
     private String extractJwtFromRequest(HttpServletRequest request) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'extractJwtFromRequest'");
     }
     
-
     
+    
+    private void sendErrorResponse(UnauthorizedException e, HttpServletResponse response, HttpServletRequest request) {
+        // TODO Auto-generated method stub
+            //    ErrorDTO errorDTO = ErrorDTO.builder()
+        //         .message(e.getErrorCode().map(ErrorCode::getMessage).orElse(e.getMessage()))
+        //         .errorCode(e.getErrorCode().map(ErrorCode::name).orElse(null))
+        //         .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+        //         .statusCode(HttpStatus.UNAUTHORIZED.value())
+        //         .timestamp(LocalDateTime.now())
+        //         .path(request.getRequestURI())
+        //         .build();
+        // response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        // response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // response.getWriter().write(mapper.writeValueAsString(errorDTO));
+    }
 
 }

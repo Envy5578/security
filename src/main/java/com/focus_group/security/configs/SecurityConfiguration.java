@@ -2,6 +2,7 @@ package com.focus_group.security.configs;
 
 import java.util.List;
 
+
 import com.focus_group.security.properties.ApplicationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,7 +71,8 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
+                //TODO: fix csrf
+                .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))

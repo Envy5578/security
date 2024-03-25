@@ -15,5 +15,4 @@ public record AuthenticationRequest(
         @NotBlank(message = "Password cannot be blank")
         @Length(min = 8, max = 255, message = "Password length must be between 8 and 255 characters")
         String password
-
 ) implements Serializable {}
