@@ -2,6 +2,7 @@ package com.focus_group.security.tokens;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.token.Token;
+import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -9,6 +10,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Component
 public class JwtCore implements Token {
 
     @Value("${testing.app.secret}")
@@ -18,6 +20,7 @@ public class JwtCore implements Token {
     @Value("${testing.app.refreshTokenExpiration}")
     private int refreshTokenExpiration;
     private static final String AUTHORIZATION = "Authorization";
+
     public String generateAccessToken(String username) {
         
         return JWT.create()
