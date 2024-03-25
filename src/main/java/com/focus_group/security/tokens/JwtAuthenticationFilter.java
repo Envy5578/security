@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-//    private final JwtTokenService tokenService;
+   private final JwtTokenService tokenService;
     private static final List<String> ALLOWED_PATHS = List.of(
             "/api/v1/auth",
             "api/v1/test",
@@ -51,8 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
                 try {
             String jwt = extractJwtFromRequest(request);
-//            String userId = tokenService.extractUserIdFromJWT(jwt);
-//            authenticateUserIfNecessary(userId, jwt, request);
+           String userId = tokenService.extractUserIdFromJWT(jwt);
+           authenticateUserIfNecessary(userId, jwt, request);
         } catch (UnauthorizedException e) {
             log.error("Authentication error: {}", e.getMessage());
             sendErrorResponse(e, response, request);
