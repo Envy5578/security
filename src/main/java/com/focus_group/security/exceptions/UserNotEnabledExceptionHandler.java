@@ -1,17 +1,16 @@
-package com.focus_group.security.exception;
-
-import java.io.IOException;
-
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
+package com.focus_group.security.exceptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Component
 public class UserNotEnabledExceptionHandler implements AuthenticationEntryPoint {
@@ -20,7 +19,7 @@ public class UserNotEnabledExceptionHandler implements AuthenticationEntryPoint 
     //TODO
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException{
+                         AuthenticationException authException) throws IOException, ServletException {
         // log.error(e);
 
         // ErrorDTO errorDTO = ErrorDTO.builder()
@@ -35,5 +34,5 @@ public class UserNotEnabledExceptionHandler implements AuthenticationEntryPoint 
         // response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         // response.getWriter().write(mapper.writeValueAsString(errorDTO));
     }
-    
+
 }
