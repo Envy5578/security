@@ -1,11 +1,11 @@
 package com.focus_group.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import jakarta.servlet.http.HttpServletRequest;
-
+// Данный класс уже нигде не используется, мб нужно удалить
 public class web implements CorsConfigurationSource {
 
     @Override
@@ -14,5 +14,5 @@ public class web implements CorsConfigurationSource {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCorsConfiguration'");
     }
-    
+
 }

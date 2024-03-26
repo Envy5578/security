@@ -1,8 +1,10 @@
-package com.focus_group.security.repository;
+package com.focus_group.security.repositories;
 
 import java.io.FileNotFoundException;
+
 public interface EmailRepository {
 
     void sendSimpleEmail(final String toAddress, final String subject, final String message);
+
     void sendEmailWithAttachment(final String toAddress, final String subject, final String message, final String attachment) throws Exception, FileNotFoundException;
 }

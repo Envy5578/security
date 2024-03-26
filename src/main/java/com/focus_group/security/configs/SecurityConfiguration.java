@@ -1,9 +1,9 @@
 package com.focus_group.security.configs;
 
-import java.util.List;
-
-
+import com.focus_group.security.exceptions.UserNotEnabledExceptionHandler;
 import com.focus_group.security.properties.ApplicationProperties;
+import com.focus_group.security.tokens.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,10 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.focus_group.security.exception.UserNotEnabledExceptionHandler;
-import com.focus_group.security.tokens.JwtAuthenticationFilter;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity

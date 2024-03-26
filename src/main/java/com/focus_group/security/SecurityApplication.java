@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SecurityApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		SpringApplication.run(SecurityApplication.class, args);
-	}
+        SpringApplication.run(SecurityApplication.class, args);
+    }
 
 
 }

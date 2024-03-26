@@ -20,4 +20,5 @@ public record NewPasswordRequest(
         @Length(min = 8, max = 255, message = "Confirm password length must be less than or equal to 255 characters")
         @JsonProperty(required = true)
         String confirmPassword
-) implements Serializable {}
+) implements Serializable {
+}
