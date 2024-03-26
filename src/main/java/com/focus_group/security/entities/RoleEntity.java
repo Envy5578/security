@@ -1,4 +1,4 @@
-package com.focus_group.security.entitys;
+package com.focus_group.security.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,5 +23,5 @@ public class RoleEntity {
                 role.getRole_name()
         );
     }
-    
+
 }
