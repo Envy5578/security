@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @SuppressWarnings("null")
     Optional<UserEntity> findById(Long id);
-
+    Optional<Boolean> existsByEmail(String email);
     Optional<UserEntity> findByEmail(String email);
 
 }
