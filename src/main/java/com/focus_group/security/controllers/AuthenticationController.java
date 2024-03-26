@@ -1,15 +1,10 @@
 package com.focus_group.security.controllers;
 
-import com.focus_group.security.dto.NewPasswordRequest;
-import com.focus_group.security.dto.ResetPasswordRequest;
 import com.focus_group.security.services.PasswordResetService;
-import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
