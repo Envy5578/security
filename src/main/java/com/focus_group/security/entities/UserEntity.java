@@ -1,4 +1,4 @@
-package com.focus_group.security.entitys;
+package com.focus_group.security.entities;
 
 import java.util.Collection;
 

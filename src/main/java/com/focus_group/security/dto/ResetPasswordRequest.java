@@ -14,4 +14,5 @@ public record ResetPasswordRequest(
         @Length(max = 255, message = "Email length must be less than or equal to 255 characters")
         @Email(message = "Invalid email format")
         String email
-) implements Serializable {}
+) implements Serializable {
+}

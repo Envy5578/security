@@ -1,7 +1,7 @@
-package com.focus_group.security.exception;
-import org.springframework.security.core.AuthenticationException;
+package com.focus_group.security.exceptions;
 
 import com.focus_group.security.enumType.ErrorCode;
+import org.springframework.security.core.AuthenticationException;
 
 public class UnauthorizedException extends AuthenticationException {
 
@@ -14,7 +14,6 @@ public class UnauthorizedException extends AuthenticationException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
-    
-    
-    
+
+
 }

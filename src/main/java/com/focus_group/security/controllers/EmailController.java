@@ -1,6 +1,6 @@
 package com.focus_group.security.controllers;
 
-import com.focus_group.security.repository.EmailRepository;
+import com.focus_group.security.repositories.EmailRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class EmailController {
         try {
             emailService.sendSimpleEmail(email, "Welcome", "This is a welcome email for your!!");
         } catch (MailException mailException) {
-            LOG.error("Error while sending out email..{}", mailException.getStackTrace());
-            LOG.error("Error while sending out email..{}", mailException.fillInStackTrace());
+//            LOG.error("Error while sending out email..{}", mailException.getStackTrace());
+//            LOG.error("Error while sending out email..{}", mailException.fillInStackTrace());
             return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

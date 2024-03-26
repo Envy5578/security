@@ -1,17 +1,15 @@
 package com.focus_group.security.services;
 
-import com.focus_group.security.repository.EmailRepository;
+import com.focus_group.security.repositories.EmailRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
@@ -42,7 +40,7 @@ public class MailService implements EmailRepository {
         messageHelper.setTo(toAddress);
         messageHelper.setSubject(subject);
         messageHelper.setText(message);
-        FileSystemResource file= new FileSystemResource(ResourceUtils.getFile(attachment));
+        FileSystemResource file = new FileSystemResource(ResourceUtils.getFile(attachment));
         messageHelper.addAttachment("Purchase Order", file);
         emailSender.send(mimeMessage);
     }

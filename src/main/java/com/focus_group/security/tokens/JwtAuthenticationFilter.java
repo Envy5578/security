@@ -1,22 +1,21 @@
 package com.focus_group.security.tokens;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.focus_group.security.enumType.ErrorCode;
-import com.focus_group.security.exception.UnauthorizedException;
-
+import com.focus_group.security.exceptions.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.List;
+
 @Service
 @Component
 @Slf4j
@@ -45,11 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-                if (isRequestAllowedWithoutAuthentication(request)) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-                try {
+        if (isRequestAllowedWithoutAuthentication(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        try {
             String jwt = extractJwtFromRequest(request);
             String userId = tokenService.extractUserIdFromJWT(jwt);
             authenticateUserIfNecessary(userId, jwt, request);
@@ -57,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error("Authentication error: {}", e.getMessage());
             sendErrorResponse(e, response, request);
             return;
-        } catch (JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             log.error("Authentication error: {}", e.getMessage());
             sendErrorResponse(new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN), response, request);
             return;
@@ -66,29 +65,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    
-    
-    
+
     private boolean isRequestAllowedWithoutAuthentication(HttpServletRequest request) {
         String requestPath = request.getServletPath();
         return ALLOWED_PATHS.stream().anyMatch(requestPath::contains);
     }
-    
+
     private void authenticateUserIfNecessary(String userId, String jwt, HttpServletRequest request) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'authenticateUserIfNecessary'");
     }
-    
+
     private String extractJwtFromRequest(HttpServletRequest request) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'extractJwtFromRequest'");
     }
-    
-    
-    
+
+
     private void sendErrorResponse(UnauthorizedException e, HttpServletResponse response, HttpServletRequest request) {
         // TODO Auto-generated method stub
-            //    ErrorDTO errorDTO = ErrorDTO.builder()
+        //    ErrorDTO errorDTO = ErrorDTO.builder()
         //         .message(e.getErrorCode().map(ErrorCode::getMessage).orElse(e.getMessage()))
         //         .errorCode(e.getErrorCode().map(ErrorCode::name).orElse(null))
         //         .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
