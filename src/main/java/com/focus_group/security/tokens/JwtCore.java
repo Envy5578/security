@@ -1,15 +1,18 @@
 package com.focus_group.security.tokens;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.token.Token;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.focus_group.security.entitys.UserEntity;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class JwtCore implements Token {
+@Component
+public class JwtCore {
 
     @Value("${testing.app.secret}")
     private String secret;
@@ -18,6 +21,7 @@ public class JwtCore implements Token {
     @Value("${testing.app.refreshTokenExpiration}")
     private int refreshTokenExpiration;
     private static final String AUTHORIZATION = "Authorization";
+
     public String generateAccessToken(String username) {
         
         return JWT.create()
@@ -26,22 +30,14 @@ public class JwtCore implements Token {
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
-    @Override
-    public String getKey() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getKey'");
+    public String generateRefreshToken(Authentication authentication) {
+        UserEntity userPrincipal = (UserEntity) authentication.getPrincipal();
+        return JWT.create()
+                .withSubject(AUTHORIZATION)
+                .withClaim("firstName", userPrincipal.getFirstName())
+                .withClaim("lastName", userPrincipal.getFirstName())
+                .withClaim("email", userPrincipal.getEmail())
+                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
+                .sign(Algorithm.HMAC512(secret.getBytes()));
     }
-
-    @Override
-    public long getKeyCreationTime() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getKeyCreationTime'");
-    }
-
-    @Override
-    public String getExtendedInformation() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getExtendedInformation'");
-    }
-    
 }

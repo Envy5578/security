@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserNotEnabledExceptionHandler implements AuthenticationEntryPoint {
     private final ObjectMapper mapper;
 
+    //TODO
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException{
