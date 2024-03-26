@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 public class SecurityConfiguration {
     private static final String[] ALLOWED_PATHS = {
+            "/email/**",
         "/api/v1/auth/**",
         "/v2/api-docs",
         "/actuator/**",
