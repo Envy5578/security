@@ -43,8 +43,7 @@ public class UserEntity implements UserDetails{
 
 
 
-
-
+    
 
     public static UserEntity build(UserEntity user) {
         return new UserEntity(
