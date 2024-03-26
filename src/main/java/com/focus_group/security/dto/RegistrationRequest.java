@@ -1,14 +1,12 @@
 package com.focus_group.security.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-import javax.management.relation.RoleInfo;
 import java.io.Serializable;
 
-public record RegisterRequest (
+public record RegistrationRequest(
         @Schema(description = "First name", requiredMode = Schema.RequiredMode.REQUIRED, example = "John", maxLength = 255)
         String firstName,
 
@@ -22,4 +20,5 @@ public record RegisterRequest (
         @NotBlank(message = "Password cannot be blank")
         @Length(min = 8, max = 255, message = "Password length must be between 8 and 255 characters")
         String password
-) implements Serializable {}
+) implements Serializable {
+}
