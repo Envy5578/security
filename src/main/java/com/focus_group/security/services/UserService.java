@@ -19,7 +19,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' found", email))
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: '%s' found", email))
                 );
         return UserEntity.build(user);
     }
