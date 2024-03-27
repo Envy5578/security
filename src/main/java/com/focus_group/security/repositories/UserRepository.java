@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.focus_group.security.entities.UserEntity;
 
 
+
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
