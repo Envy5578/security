@@ -1,38 +1,58 @@
 package com.focus_group.security.services;
-
-import com.focus_group.security.repositories.EmailRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.FileNotFoundException;
 
 
 @Service
 @PropertySource("application.properties")
-public class MailService implements EmailRepository {
-
-    @Autowired
+public class MailService{
+    @Value("${spring.mail.username}")
+    private String senderEmail;
+    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
     public JavaMailSender emailSender;
 
-    @Override
+    public ResponseEntity<String> sendEmail(String email) {
+
+        try {
+            sendSimpleEmail(email, "Привет", "Черный");
+        } catch (MailException mailException) {
+            LOG.error("Error while sending out email..{}", mailException.getStackTrace());
+            LOG.error("Error while sending out email..{}", mailException.fillInStackTrace());
+            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
+    }
     public void sendSimpleEmail(String toAddress, String subject, String message) {
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(senderEmail);
         simpleMailMessage.setTo(toAddress);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
         emailSender.send(simpleMailMessage);
     }
 
-    @Override
+
     public void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment) throws MessagingException, FileNotFoundException {
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
