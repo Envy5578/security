@@ -37,7 +37,7 @@ public class JwtCore {
         return JWT.create()
                 .withSubject(AUTHORIZATION)
                 .withClaim("firstName", userPrincipal.getFirstName())
-                .withClaim("lastName", userPrincipal.getFirstName())
+                .withClaim("lastName", userPrincipal.getLastName())
                 .withClaim("email", userPrincipal.getEmail())
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
                 .sign(Algorithm.HMAC512(secret.getBytes()));

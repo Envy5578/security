@@ -12,11 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
 @AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class UserEntity implements UserDetails{
     @Id
