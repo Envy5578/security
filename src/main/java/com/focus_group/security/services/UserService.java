@@ -1,12 +1,14 @@
 package com.focus_group.security.services;
 
-import com.focus_group.security.entities.UserEntity;
-import com.focus_group.security.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.focus_group.security.entities.UserEntity;
+import com.focus_group.security.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +23,6 @@ public class UserService implements UserDetailsService {
                 );
         return UserEntity.build(user);
     }
+    
 
 }

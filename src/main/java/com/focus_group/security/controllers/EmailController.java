@@ -1,35 +1,20 @@
 package com.focus_group.security.controllers;
 
-import com.focus_group.security.repositories.EmailRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.focus_group.security.services.MailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/email")
 public class EmailController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailController.class);
-
-    @Autowired
-    EmailRepository emailService;
+    private final MailService emailService;
 
     @GetMapping(value = "/simple-email/{user-email}")
-    public @ResponseBody
+    public @ResponseBody // возвращаемое значение должно быть сериализовано непосредственно в тело HTTP ответа.
     ResponseEntity<String> sendSimpleEmail(@PathVariable("user-email") String email) {
-
-        try {
-            emailService.sendSimpleEmail(email, "Welcome", "This is a welcome email for your!!");
-        } catch (MailException mailException) {
-//            LOG.error("Error while sending out email..{}", mailException.getStackTrace());
-//            LOG.error("Error while sending out email..{}", mailException.fillInStackTrace());
-            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
+        return emailService.sendEmail(email);
     }
 }

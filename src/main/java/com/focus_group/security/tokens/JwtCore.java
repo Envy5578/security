@@ -1,12 +1,14 @@
 package com.focus_group.security.tokens;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.focus_group.security.entities.UserEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.focus_group.security.entities.UserEntity;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
@@ -20,11 +22,11 @@ public class JwtCore {
     private int refreshTokenExpiration;
     private static final String AUTHORIZATION = "Authorization";
 
-    public String generateAccessToken(String username) {
+    public String generateAccessToken(String email) {
 
         return JWT.create()
                 .withSubject(AUTHORIZATION)
-                .withClaim("username", username)
+                .withClaim("email", email)
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
@@ -39,4 +41,5 @@ public class JwtCore {
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
+    
 }
