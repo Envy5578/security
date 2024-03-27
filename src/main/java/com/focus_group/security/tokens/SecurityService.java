@@ -1,11 +1,13 @@
 package com.focus_group.security.tokens;
 
-import com.focus_group.security.entities.UserEntity;
-import com.focus_group.security.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.focus_group.security.entities.UserEntity;
+import com.focus_group.security.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
