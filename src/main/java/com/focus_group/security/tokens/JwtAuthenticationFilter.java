@@ -1,21 +1,28 @@
 package com.focus_group.security.tokens;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.ErrorCode;
 import com.focus_group.security.exceptions.UnauthorizedException;
+import com.focus_group.security.services.UserService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.List;
 
 @Service
 @Component
@@ -23,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenService tokenService;
+    private final UserService userService;
     private static final List<String> ALLOWED_PATHS = List.of(
             "/api/v1/auth",
             "api/v1/test",
@@ -51,8 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         try {
             String jwt = extractJwtFromRequest(request);
-            String userId = tokenService.extractUserIdFromJWT(jwt);
-            authenticateUserIfNecessary(userId, jwt, request);
+            String email = tokenService.extractUserEmailFromJWT(jwt);
+            authenticateUserIfNecessary(email, jwt, request);
         } catch (UnauthorizedException e) {
             log.error("Authentication error: {}", e.getMessage());
             sendErrorResponse(e, response, request);
@@ -72,9 +80,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return ALLOWED_PATHS.stream().anyMatch(requestPath::contains);
     }
 
-    private void authenticateUserIfNecessary(String userId, String jwt, HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'authenticateUserIfNecessary'");
+    private void authenticateUserIfNecessary(String email, String jwt, HttpServletRequest request) {
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserEntity userDetails = (UserEntity)userService.loadUserByUsername(email);
+            if (!tokenService.validateToken(jwt)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
     }
 
     private String extractJwtFromRequest(HttpServletRequest request) {
