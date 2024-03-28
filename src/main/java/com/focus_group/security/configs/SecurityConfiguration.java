@@ -62,6 +62,7 @@ public class SecurityConfiguration {
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setExposedHeaders(List.of("Authorization"));
                     return corsConfiguration;
+                    
                 }))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(ALLOWED_PATHS)
                         .permitAll()
