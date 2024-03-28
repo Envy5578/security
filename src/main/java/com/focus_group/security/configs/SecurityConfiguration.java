@@ -75,4 +75,5 @@ public class SecurityConfiguration {
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))
                 .build();
     }
+    
 }

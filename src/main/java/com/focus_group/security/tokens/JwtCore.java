@@ -40,7 +40,7 @@ public class JwtCore {
                 .withClaim("lastName", user.getLastName())
                 .withClaim("email", user.getEmail())
                 .withClaim("tokenType", tokenType.name())
-                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenType()))
+                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenExpiration()))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
