@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
+
 public class SecurityConfiguration {
     private static final String[] ALLOWED_PATHS = {
             "/api/v1/auth/**",
@@ -74,4 +75,5 @@ public class SecurityConfiguration {
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))
                 .build();
     }
+    
 }
