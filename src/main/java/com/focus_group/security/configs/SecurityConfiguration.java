@@ -1,12 +1,9 @@
 package com.focus_group.security.configs;
 
-import com.focus_group.security.exceptions.UserNotEnabledExceptionHandler;
-import com.focus_group.security.properties.ApplicationProperties;
-import com.focus_group.security.tokens.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.List;
+import com.focus_group.security.exceptions.UserNotEnabledExceptionHandler;
+import com.focus_group.security.properties.ApplicationProperties;
+import com.focus_group.security.tokens.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +44,6 @@ public class SecurityConfiguration {
             "/"};
 
     private final ApplicationProperties applicationProperties;
-    private final AuthenticationProvider authenticationProvider;
     private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
     private final JwtAuthenticationFilter jwtAuthFilter;
 
@@ -70,7 +70,6 @@ public class SecurityConfiguration {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //TODO: fix csrf
                 .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
-                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))
                 .build();

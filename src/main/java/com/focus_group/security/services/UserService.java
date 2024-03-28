@@ -1,5 +1,7 @@
 package com.focus_group.security.services;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,15 +21,18 @@ public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: '%s' found", email))
                 );
-        return UserEntity.build(user)
-        ;
+        return user;
     }
-    
+
+    public Optional<UserEntity> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
     @SuppressWarnings("null")
     public void save(RegistrationRequest register) {
         UserEntity user = UserEntity.builder()
