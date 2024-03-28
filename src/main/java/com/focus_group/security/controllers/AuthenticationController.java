@@ -29,7 +29,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody @Valid RegistrationRequest register) {
-        service.registerAndGetToken(register);
+        service.register(register);
     }
 
     @Operation(summary = "Sign In")

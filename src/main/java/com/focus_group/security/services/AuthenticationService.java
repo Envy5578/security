@@ -33,7 +33,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     
-    public void registerAndGetToken(RegistrationRequest register) {
+    public void register(RegistrationRequest register) {
         userService.save(register);
         // sendMailVerification(register);
     }
