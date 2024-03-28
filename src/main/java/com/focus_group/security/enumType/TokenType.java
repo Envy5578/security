@@ -1,17 +1,20 @@
 package com.focus_group.security.enumType;
 
 public enum TokenType {
-    RESET_TOKEN("RESET_TOKEN"),
-    REFRESH_TOKEN("REFRESH_TOKEN"),
-    RESET_PASSWORD_EMAIL("RESET_PASSWORD_EMAIL");
+    RESET_TOKEN(5*60),
+    REFRESH_TOKEN(7*50*60),
+    RESET_PASSWORD_EMAIL(5*60);
 
-    private final String tokenType;
+    private final long tokenType;
 
-    TokenType(String tokenType) {
+    TokenType(long tokenType) {
         this.tokenType = tokenType;
     }
 
-    public String getTokenType() {
+    public Long getTokenType() {
         return tokenType;
     }
+    // public String getTokenType(String tokenType) {
+    //     return tokenType;
+    // }
 }
