@@ -83,7 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void authenticateUserIfNecessary(String email, String jwt, HttpServletRequest request) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserEntity userDetails = (UserEntity)userService.loadUserByUsername(email);
-            if (!tokenService.validateToken(jwt)) {
+            if (tokenService.validateToken(jwt)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
