@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.focus_group.security.dto.AuthenticationRequest;
 import com.focus_group.security.dto.AuthenticationResponse;
 import com.focus_group.security.dto.RegistrationRequest;
-import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.TokenType;
 import com.focus_group.security.tokens.JwtTokenService;
 
@@ -42,8 +41,7 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse signIn(@Valid AuthenticationRequest register, HttpServletRequest request) {
-        Authentication authentication = null;
-        UserEntity user = userService.findByEmail(register.email()).orElseThrow(()-> new RuntimeException("User not found"));
+        final Authentication authentication;
         try{
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(register.email(), register.password()));
             }catch (BadCredentialsException e) {
@@ -51,7 +49,7 @@ public class AuthenticationService {
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtTokenService.generateAccessToken(register.email());
-        String refreshToken = jwtTokenService.generateRefreshToken(user, TokenType.REFRESH_TOKEN);
+        String refreshToken = jwtTokenService.generateRefreshToken(register.email(), TokenType.REFRESH_TOKEN);
         return new AuthenticationResponse(TokenType.REFRESH_TOKEN.name() , accessToken, ACCESS_TOKEN_EXPIRES_IN_MINUTES, refreshToken);
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,6 +48,7 @@ public class SecurityConfiguration {
     private final ApplicationProperties applicationProperties;
     private final UserNotEnabledExceptionHandler userNotEnabledExceptionHandler;
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authProvider;
 
 
     @Bean
@@ -62,6 +64,7 @@ public class SecurityConfiguration {
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setExposedHeaders(List.of("Authorization"));
                     return corsConfiguration;
+                    
                 }))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(ALLOWED_PATHS)
                         .permitAll()
@@ -69,7 +72,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //TODO: fix csrf
+                .authenticationProvider(authProvider)
                 .exceptionHandling(exc -> exc.authenticationEntryPoint(userNotEnabledExceptionHandler))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout"))

@@ -3,7 +3,6 @@ package com.focus_group.security.tokens;
 
 import org.springframework.stereotype.Service;
 
-import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.TokenType;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +26,8 @@ public class JwtTokenService {
     public String generateAccessToken(String email) {
         return jwtCore.generateAccessToken(email);
     }
-    public String generateRefreshToken(UserEntity user, TokenType tokenType) {
-        return jwtCore.generateRefreshToken(user, tokenType);
+    public String generateRefreshToken(String email, TokenType tokenType) {
+        return jwtCore.generateRefreshToken(email, tokenType);
     }
 }
 

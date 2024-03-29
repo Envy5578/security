@@ -9,13 +9,16 @@ import java.security.interfaces.RSAPublicKey;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.focus_group.security.services.UserService;
+import com.focus_group.security.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,13 +26,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
     
-    private UserService userService;
+    // private UserService userService;
+    private final UserRepository repository;
 
     @Bean
+    public UserDetailsService userDetailsService() {
+        return email -> repository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService());
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
+    }
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        var authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        // var authProvider = new DaoAuthenticationProvider();
+        // authProvider.setUserDetailsService(userDetailsService());
+        // authProvider.setPasswordEncoder(passwordEncoder());
         return config.getAuthenticationManager();
     }
 
