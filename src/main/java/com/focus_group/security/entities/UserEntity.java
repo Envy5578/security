@@ -40,33 +40,9 @@ public class UserEntity implements UserDetails{
 
     @Column(name = "active", nullable = true)
     private Boolean active;
-
-
-
-    public UserEntity() {
-        
-    }
-
-
-
-
-
-
+    public UserEntity() {}
 
     
-
-    public static UserEntity build(UserEntity user) {
-        return new UserEntity(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getActive()
-        );
-        
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.TokenType;
 
 import lombok.RequiredArgsConstructor;
@@ -32,13 +31,11 @@ public class JwtCore {
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
-    public String generateRefreshToken(UserEntity user, TokenType tokenType) {
+    public String generateRefreshToken(String email, TokenType tokenType) {
         
         return JWT.create()
                 .withSubject(AUTHORIZATION)
-                .withClaim("firstName", user.getFirstName())
-                .withClaim("lastName", user.getLastName())
-                .withClaim("email", user.getEmail())
+                .withClaim("email", email)
                 .withClaim("tokenType", tokenType.name())
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenExpiration()))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
