@@ -15,7 +15,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.ErrorCode;
 import com.focus_group.security.exceptions.UnauthorizedException;
-import com.focus_group.security.repositories.UserRepository;
+import com.focus_group.security.services.UserService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,8 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenService tokenService;
-    // private final UserService userService;
-    private final UserRepository repository;
+    private final UserService userService;
     private static final List<String> ALLOWED_PATHS = List.of(
             "/api/v1/auth",
             "api/v1/test",
@@ -83,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void authenticateUserIfNecessary(String email, String jwt, HttpServletRequest request) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserEntity userDetails = repository.findByEmail(email).orElseThrow();
+            UserEntity userDetails = userService.findByEmail(email).orElseThrow();
             if (tokenService.validateToken(jwt)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
