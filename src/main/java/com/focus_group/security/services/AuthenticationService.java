@@ -1,5 +1,6 @@
 package com.focus_group.security.services;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.focus_group.security.dto.AuthenticationRequest;
 import com.focus_group.security.dto.AuthenticationResponse;
 import com.focus_group.security.dto.RegistrationRequest;
+import com.focus_group.security.dto.ResetPassword;
+import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.enumType.TokenType;
 import com.focus_group.security.tokens.JwtTokenService;
 
@@ -30,9 +33,10 @@ public class AuthenticationService {
     
     public void register(RegistrationRequest register) {
         userService.save(register);
-        // sendMailVerification(register);
+        // sendMailVerification(register); ОТПРАВКА ЛОКАЛЬНОГО ACTIVE ТОКЕНА TODO
     }
 
+  
 
     private void sendMailVerification(RegistrationRequest register) {
         // TODO Auto-generated method stub
@@ -48,8 +52,22 @@ public class AuthenticationService {
             throw new RuntimeException("Invalid username or password");
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String accessToken = jwtTokenService.generateAccessToken(register.email());
+        String accessToken = jwtTokenService.generateAccessToken(register.email(), TokenType.ACCESS_TOKEN);
         String refreshToken = jwtTokenService.generateRefreshToken(register.email(), TokenType.REFRESH_TOKEN);
         return new AuthenticationResponse(TokenType.REFRESH_TOKEN.name() , accessToken, ACCESS_TOKEN_EXPIRES_IN_MINUTES, refreshToken);
+    }
+
+
+
+    public ResponseEntity<?> resetPassword(@Valid ResetPassword password , HttpServletRequest request) {
+        String token = request.getParameter("token");
+        UserEntity user = null;
+        if(jwtTokenService.validateToken(token)) {
+            user = userService.findByEmail(jwtTokenService.extractUserEmailFromJWT(token)).orElseThrow();
+        }
+        userService.resetPassword(password, user);
+        // TODO СМЕНА ПАРОЛЯ С ССЫЛКИ НА ЕМЭЙЛ
+        
+        return ResponseEntity.ok("Password changed successfully");
     }
 }
