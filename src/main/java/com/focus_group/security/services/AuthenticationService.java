@@ -36,8 +36,6 @@ public class AuthenticationService {
         // sendMailVerification(register); ОТПРАВКА ЛОКАЛЬНОГО ACTIVE ТОКЕНА TODO
     }
 
-  
-
     private void sendMailVerification(RegistrationRequest register) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'sendMailVerification'");
