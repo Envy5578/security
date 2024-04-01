@@ -1,14 +1,18 @@
 package com.focus_group.security.services;
 
+import java.security.Principal;
 import java.util.Optional;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.focus_group.security.dto.NewPasswordRequest;
 import com.focus_group.security.dto.RegistrationRequest;
+import com.focus_group.security.dto.ResetPassword;
 import com.focus_group.security.dto.UserDTO;
 import com.focus_group.security.entities.UserEntity;
 import com.focus_group.security.mapper.UserMapper;
@@ -47,4 +51,25 @@ public class UserService {
         }
         return UserMapper.toDTO(user);
     }
+
+    public void changePassword(NewPasswordRequest request, Principal connectedUser) {
+        UserEntity user = (UserEntity) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+            throw new RuntimeException("Wrong password");
+            
+        }
+        if(!request.password().equals(request.confirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(request.password()));
+        repository.save(user);
+    }
+    public void resetPassword(ResetPassword request, UserEntity user) {
+        if(!request.password().equals(request.confirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(request.password()));
+        repository.save(user);
+    }
+    
 }
