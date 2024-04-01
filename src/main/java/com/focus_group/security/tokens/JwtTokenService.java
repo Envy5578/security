@@ -23,8 +23,11 @@ public class JwtTokenService {
         return jwtCore.validateToken(jwt);
     }
 
-    public String generateAccessToken(String email) {
-        return jwtCore.generateAccessToken(email);
+    public String generateResetToken(String email, TokenType tokenType) {
+        return jwtCore.generateResetToken(email, tokenType);
+    }
+    public String generateAccessToken(String email, TokenType tokenType) {
+        return jwtCore.generateAccessToken(email, tokenType);
     }
     public String generateRefreshToken(String email, TokenType tokenType) {
         return jwtCore.generateRefreshToken(email, tokenType);

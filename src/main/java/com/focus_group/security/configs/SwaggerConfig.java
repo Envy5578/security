@@ -7,24 +7,24 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @OpenAPIDefinition(
-    info = @Info(
-            title = "Security",
-            version = "1.0",
-            description = "Security API documentation"
-    ),
-    security = {
-            @SecurityRequirement(
-                    name = "bearerAuth"
-            )
-    }
+        info = @Info(
+                title = "Security",
+                version = "1.0",
+                description = "Security API documentation"
+        ),
+        security = {
+                @SecurityRequirement(
+                name = "bearerAuth"
+        )
+}
 )
 @SecurityScheme(
-    name = "bearerAuth",
-    description = "JWT auth description",
-    scheme = "bearer",
-    type = SecuritySchemeType.HTTP,
-    bearerFormat = "JWT",
-    in = SecuritySchemeIn.HEADER
+        name = "bearerAuth",
+        description = "JWT auth description",
+        scheme = "bearer",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        in = SecuritySchemeIn.HEADER
 )
 
 public class SwaggerConfig {

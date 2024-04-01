@@ -3,17 +3,19 @@ package com.focus_group.security.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.focus_group.security.dto.AuthenticationRequest;
 import com.focus_group.security.dto.AuthenticationResponse;
 import com.focus_group.security.dto.RegistrationRequest;
+import com.focus_group.security.dto.ResetPassword;
 import com.focus_group.security.services.AuthenticationService;
+import com.focus_group.security.services.PasswordResetService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Authentication, Registration", description = "Authentication, Registration")
 public class AuthenticationController {
     private final AuthenticationService service;
-    
+    private final PasswordResetService passwordResetService;
     @Operation(summary = "Registration")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,11 +44,16 @@ public class AuthenticationController {
     }
 
 
+    //ПОЛУЧЕНИЕ ПАРОЛЯ С ССЫЛКИ НА ЕМЭЙЛ
     @Operation(summary = "Reset password for email")
     @GetMapping("/reset-password-email/{resetToken}")
-    public ResponseEntity<?> resetPasswordForEmail(@RequestParam("resetToken") String resetToken) {
-        
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> resetPasswordForEmailToken(@PathVariable("resetToken") String resetToken) {
+        return passwordResetService.resetPasswordForEmailToken(resetToken);
+    }
+    
+    //СМЕНА ПАРОЛЯ С ССЫЛКИ НА ЕМЭЙЛ
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPassword password, HttpServletRequest request) {
+        return service.resetPassword(password, request);
     }
 }
