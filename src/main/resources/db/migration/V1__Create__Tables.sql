@@ -1,33 +1,22 @@
-create table users (
-    id bigint generated always as identity primary key,
-    firstname varchar(40) not null,
-    lastname varchar (40) not null,
-    password varchar(100) not null,
-    email varchar(100) not null,
-    active boolean not null default true
+CREATE TABLE users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    firstname VARCHAR(40) NOT NULL,
+    lastname VARCHAR(40) NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT true
 );
 
-
-create table roles (
-    id bigint generated always as identity  primary key,
-    role_name varchar(30) not null
+CREATE TABLE roles (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id),
+    role_name VARCHAR(255) NOT NULL
 );
 
-create table tokens (
-    id bigint generated always as identity  primary key,
-    reset_token varchar(255) not null,
-    refresh_token varchar(255) not null
+CREATE TABLE tokens (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(40) NOT NULL,
+    revoke_token BOOLEAN NOT NULL DEFAULT false,
+    token VARCHAR(255) NOT NULL,
+    user_id BIGINT REFERENCES users(id)
 );
-
-create table user_token(
-    id bigint generated always as identity  primary key,
-    user_id int REFERENCES users(id),
-    token_id int REFERENCES tokens(id)
-);
-
-create table user_roles (
-    id bigint generated always as identity primary key,
-    user_id int REFERENCES users(id),
-    role_id int REFERENCES roles(id)
-);
-
