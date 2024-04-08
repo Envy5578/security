@@ -16,27 +16,34 @@ public class JwtCore {
 
     @Value("${testing.app.secret}")
     private String secret;
-    @Value("${testing.app.accessTokenExpiration}")
-    private int accessTokenExpiration;
-    @Value("${testing.app.refreshTokenExpiration}")
-    private int refreshTokenExpiration;
     private static final String AUTHORIZATION = "Authorization";
-
-    public String generateAccessToken(String email) {
+    private static final String EMAIL = "email";
+    private static final String TOKEN_TYPE = "tokenType";
+    public String generateAccessToken(String email, TokenType tokenType) {
 
         return JWT.create()
                 .withSubject(AUTHORIZATION)
-                .withClaim("email", email)
-                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + accessTokenExpiration))
+                .withClaim(EMAIL, email)
+                .withClaim(TOKEN_TYPE, tokenType.name())
+                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenExpiration()))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
+    public String generateResetToken(String email, TokenType tokenType) {
+
+        return JWT.create()
+                .withSubject(AUTHORIZATION)
+                .withClaim(EMAIL, email)
+                .withClaim(TOKEN_TYPE, tokenType.name())
+                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenExpiration()))
+                .sign(Algorithm.HMAC512(secret.getBytes()));
+    }
     public String generateRefreshToken(String email, TokenType tokenType) {
         
         return JWT.create()
                 .withSubject(AUTHORIZATION)
-                .withClaim("email", email)
-                .withClaim("tokenType", tokenType.name())
+                .withClaim(EMAIL, email)
+                .withClaim(TOKEN_TYPE, tokenType.name())
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + tokenType.getTokenExpiration()))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
@@ -45,7 +52,7 @@ public class JwtCore {
         return JWT.require(Algorithm.HMAC512(secret.getBytes()))
                 .build()
                 .verify(jwt)
-                .getClaim("email")
+                .getClaim(EMAIL)
                 .asString();
     }
     public boolean validateToken(String token) {

@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
     
-    // private UserService userService;
     private final UserRepository repository;
 
     @Bean
@@ -43,9 +42,6 @@ public class ApplicationConfiguration {
     }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        // var authProvider = new DaoAuthenticationProvider();
-        // authProvider.setUserDetailsService(userDetailsService());
-        // authProvider.setPasswordEncoder(passwordEncoder());
         return config.getAuthenticationManager();
     }
 
