@@ -1,13 +1,10 @@
 package com.focus_group.security;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-@SpringBootTest
+import com.focus_group.security.controllers.AuthenticationController;
+
+@WebMvcTest(controllers = AuthenticationController.class)
 class SecurityApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
 
 }

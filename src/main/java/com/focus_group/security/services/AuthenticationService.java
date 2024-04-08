@@ -52,6 +52,7 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtTokenService.generateAccessToken(register.email(), TokenType.ACCESS_TOKEN);
         String refreshToken = jwtTokenService.generateRefreshToken(register.email(), TokenType.REFRESH_TOKEN);
+        //TODO исправить респонсе с токенами
         return new AuthenticationResponse(TokenType.REFRESH_TOKEN.name() , accessToken, ACCESS_TOKEN_EXPIRES_IN_MINUTES, refreshToken);
     }
 
