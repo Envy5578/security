@@ -30,19 +30,19 @@ public class AuthenticationService {
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
     private final AuthenticationManager authenticationManager;
-    
+    private final MailService mailService;
+
     public void register(RegistrationRequest register) {
-        userService.save(register);
-        // sendMailVerification(register); ОТПРАВКА ЛОКАЛЬНОГО ACTIVE ТОКЕНА TODO
+        UserEntity userEntity = new UserEntity();
+        sendMailVerification(register, userEntity);
     }
 
-  
-
-    private void sendMailVerification(RegistrationRequest register) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendMailVerification'");
+    private void sendMailVerification(RegistrationRequest register, UserEntity userEntity) {
+        if (userService != null && userService.findByEmail(register.email()).isEmpty()) {
+            userService.save(register); // Сохранение пользователя с активностью false
+            mailService.sendEmailVerification(register.email());
+        }
     }
-
 
     public AuthenticationResponse signIn(@Valid AuthenticationRequest register, HttpServletRequest request) {
         final Authentication authentication;
@@ -70,4 +70,6 @@ public class AuthenticationService {
         
         return ResponseEntity.ok("Password changed successfully");
     }
+
+
 }

@@ -21,7 +21,7 @@ public class PasswordResetService {
         if(jwtTokenService.validateToken(token)) {
             //TODO MAILSERVICE SEND TOKEN FOR EMAIL;
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "/reset-Password");
+            headers.add("Location", "/reset-password");
             headers.add("Email", jwtTokenService.extractUserEmailFromJWT(token));
             System.out.println(headers.get("Location") + " " + headers.get("Email"));
             return new ResponseEntity<>(headers.get("Location"), HttpStatus.FOUND);

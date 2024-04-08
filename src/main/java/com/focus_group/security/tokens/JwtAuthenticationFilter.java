@@ -91,14 +91,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private String extractJwtFromRequest(HttpServletRequest request) {
+    private String extractJwtFromRequest(HttpServletRequest request)  {
         String headerAuth = request.getHeader("Authorization");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);
         }
         
-        throw new UnsupportedOperationException("Unimplemented method 'extractJwtFromRequest'");
+        return null;
     }
 
 

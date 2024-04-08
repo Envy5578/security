@@ -1,19 +1,14 @@
 package com.focus_group.security.controllers;
 
+import com.focus_group.security.PasswordResetEmailRequest;
+import com.focus_group.security.dto.*;
+import com.focus_group.security.services.MailService;
+import com.focus_group.security.tokens.JwtTokenService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.focus_group.security.dto.AuthenticationRequest;
-import com.focus_group.security.dto.AuthenticationResponse;
-import com.focus_group.security.dto.RegistrationRequest;
-import com.focus_group.security.dto.ResetPassword;
 import com.focus_group.security.services.AuthenticationService;
 import com.focus_group.security.services.PasswordResetService;
 
@@ -30,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController {
     private final AuthenticationService service;
     private final PasswordResetService passwordResetService;
+    private final MailService emailService;
+
     @Operation(summary = "Registration")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,8 +43,8 @@ public class AuthenticationController {
 
     //ПОЛУЧЕНИЕ ПАРОЛЯ С ССЫЛКИ НА ЕМЭЙЛ
     @Operation(summary = "Reset password for email")
-    @GetMapping("/reset-password-email/{resetToken}")
-    public ResponseEntity<?> resetPasswordForEmailToken(@PathVariable("resetToken") String resetToken) {
+    @PostMapping("/reset-password-email")
+    public ResponseEntity<?> resetPasswordForEmailToken(String resetToken) {
         return passwordResetService.resetPasswordForEmailToken(resetToken);
     }
     
@@ -56,4 +53,30 @@ public class AuthenticationController {
     public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPassword password, HttpServletRequest request) {
         return service.resetPassword(password, request);
     }
-}
+
+    @PostMapping(value = "/password-reset")
+    @Operation(summary = "Reset password for email")
+    public @ResponseBody // возвращаемое значение должно быть сериализовано непосредственно в тело HTTP ответа.
+    ResponseEntity<String> resetPassword(@RequestBody PasswordResetEmailRequest request) {
+        try {
+            emailService.sendEmailToUser(request.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to send email for password reset.");
+        }
+
+        return ResponseEntity.ok("Please check your inbox for password reset instructions.");
+    }
+
+    @PostMapping("/verify")
+    public @ResponseBody // возвращаемое значение должно быть сериализовано непосредственно в тело HTTP ответа.
+    ResponseEntity<String> sendEmailVerification(@RequestBody PasswordResetEmailRequest request) {
+        return emailService.sendEmailVerification(request.getEmail());
+    }
+
+//    @PostMapping("/refresh-token")
+//    public @ResponseBody // возвращаемое значение должно быть сериализовано непосредственно в тело HTTP ответа.
+//    ResponseEntity<String> refreshToken( @RequestBody String email, HttpServletRequest request) {
+//        return jwtTokenService.generateRefreshToken( email,  request);
+//    } // Нужно додалать
+} // пока отправки не дописаны но в будущем сделаю
